@@ -11,6 +11,7 @@
 
 # Make sure account is clas for clas6 sim
 #SBATCH --account=clas
+## SBATCH --project=e1d
 
 # Add time constraint to 2 days
 #SBATCH --time=2-00
@@ -20,8 +21,8 @@
 
 # Place logfiles in a directory
 # This directory should be in the same folder as the sim.sh script
-#SBATCH --output=logfiles/sim_%A_%a.out
-#SBATCH --error=logfiles/sim_%A_%a.err
+#SBATCH --output=logfiles/e1d_sim_%A_%a.out
+#SBATCH --error=logfiles/e1d_sim_%A_%a.err
 
 # To run multiple jobs I use an array
 #SBATCH --array=1-5000%500
@@ -45,12 +46,12 @@ cp-to-job ${JOB_DIR}/aao_rad.inp
 cp-to-job ${JOB_DIR}/gsim.inp
 cp-to-job ${JOB_DIR}/user_ana.tcl
 #************************* Modify this to get your input files in ****************************
-
+#env
 # starttime to time job
 res1=$(date +%s.%N)
 
 export CLAS_CALDB_DBNAME="calib_user"
-export CLAS_CALDB_RUNINDEX="calib_user.RunIndexe1dvcs"
+export CLAS_CALDB_RUNINDEX="RunIndex"
 #export CLAS_CALDB_RUNINDEX="RunIndexe1fDC"
 
 
@@ -64,7 +65,7 @@ gsim_bat -nomcdata -ffread gsim.inp -mcin aao_rad.evt -bosout gsim.bos
 
 ########=========== Run gpp ===========########
 #************************* Modify this for gpp configuration ****************************
-gpp -ouncooked.bos -a1.357 -b1.357 -c1.357 -f1.05 -P0x1b -R37513 gsim.bos
+gpp -ouncooked.bos -a1.357 -b1.357 -c1.357 -f1.05 -P0x1b -R23500 gsim.bos
 #************************* Modify this for gpp configurtaion ****************************
 
 ########=========== Run user_ana ===========########
@@ -74,7 +75,7 @@ user_ana -t user_ana.tcl
 ########=========== Run h10maker ===========########
 run-singularity-clas6 h10maker -rpm cooked.bos all.root
 ########=========== Copy all the files to Work for output ===========########
-cp -r ${SCRATCH}/all.root ${WORK_DIR}/e1d/npip/e1d_sim_${DATE}_${SLURM_JOB_ID}_${SLURM_ARRAY_TASK_ID}.root
+cp -r ${SCRATCH}/all.root ${WORK_DIR}/e1d/npip/e1d_sim_${DATE}_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.root
 #************************* Modify this for your output file preferences ****************************
 
 rm -rf ${SCRATCH}/*
