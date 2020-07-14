@@ -1,0 +1,16 @@
+executable = test_sim.sh
+arguments = $(Cluster) $(Process)
+transfer_input_files = aao_rad.inp,gsim.inp,user_ana.tcl
+
+output = logs/out_$(Cluster).$(Process)
+error = logs/err_$(Cluster).$(Process)
+log = logs/log_$(Cluster).$(Process)
+
+#transfer_output_files = condor_exec.exe
+#transfer_output_remaps = "condor_exec.exe = exec_$(Process)_$(Cluster)"
+
+request_cpus = 1
+request_memory = 512MB
+request_disk = 1MB
+
+queue 4
