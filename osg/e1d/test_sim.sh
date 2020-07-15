@@ -22,7 +22,12 @@ source $ROOTSYS/bin/thisroot.sh
 export CLAS_CALDB_DBNAME="calib"
 export CLAS_CALDB_PASS=""
 export CLAS_CALDB_RUNINDEX="RunIndex"
-export RECSIS_RUNTIME="/recsis"
+export RECSIS_RUNTIME="${PWD}/recsis"
+mkdir -p ${RECSIS_RUNTIME}
+
+tar -xvf parms.tar.gz
+export CLAS_PARMS=${PWD}/parms
+ln -s $CLAS_PARMS/bgrid_T67to33.fpk $CLAS_PARMS/bgrid_t.fpk
 
 export CLAS_CALDB_HOST=pi0.duckdns.org
 export CLAS_CALDB_USER=root
@@ -31,14 +36,17 @@ echoerr() { printf "%s\n" "$*" >&1; printf "%s\n" "$*" >&2; }
 #set -e
 STARTTIME=$(date +%s)
 echoerr "============ aao_rad ============"
-#aao_rad < ao_rad.inp
+aao_rad < aao_rad.inp
 echoerr "============ aao_rad ============"
 
 echoerr "============ gsim_bat ============"
-#gsim_bat -nomcdata -ffread gsim.inp -mcin aao_rad.evt -bosout gsim.bos
+gsim_bat -nomcdata -ffread gsim.inp -mcin aao_rad.evt -bosout gsim.bos
 #gsim_bat -ffread gsim.inp -mcin aao_rad.evt -bosout gsim.bos
 #cp gsim.bos gsim_no_gpp.bos
 echoerr "============ gsim_bat ============"
+
+du -sh *
+ls -latr
 
 echoerr "============ gpp ============"
 #gpp -ouncooked.bos -a2.35 -b2.35 -c2.35 -f0.97 -P0x1b -R23500 gsim.bos
@@ -50,6 +58,7 @@ echoerr "============ user_ana ============"
 #user_ana -t user_ana.tcl | grep -v HFITGA | grep -v HFITH | grep -v HFNT
 echoerr "============ user_ana ============"
 
+touch all.root
 #h10maker -rpm cooked.bos all.root
 
 ls -la 

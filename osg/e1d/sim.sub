@@ -1,16 +1,25 @@
+Requirements = HAS_SINGULARITY == TRUE
++SingularityImage = "http://stash.osgconnect.net/public/tylern/clas6/clas6.img"
+#+SingularityImage = "/cvmfs/singularity.opensciencegrid.org/tylern4/clas6"
+
+JobBatchName = e1d_sim_$(Cluster)
+
 executable = test_sim.sh
-arguments = $(Cluster) $(Process)
-transfer_input_files = aao_rad.inp,gsim.inp,user_ana.tcl
+arguments = $(Cluster) $(Process) 
+transfer_input_files = test_sim.sh, aao_rad.inp, gsim.inp, user_ana.tcl, parms.tar.gz
 
 output = logs/out_$(Cluster).$(Process)
 error = logs/err_$(Cluster).$(Process)
-log = logs/log_$(Cluster).$(Process)
+log = logs/log_$(Cluster).$(Process).log
 
-#transfer_output_files = condor_exec.exe
-#transfer_output_remaps = "condor_exec.exe = exec_$(Process)_$(Cluster)"
+
+#transfer_output_files = ""
+
+transfer_output_files = aao_rad.evt, all.root
+transfer_output_remaps = "aao_rad.evt = /public/tylern/clas6/sim/aao_rad/e1d_$(Process)_$(Cluster)_aao_rad.evt; all.root = /public/tylern/clas6/sim/aao_rad/e1d_$(Process)_$(Cluster).root"
 
 request_cpus = 1
 request_memory = 512MB
-request_disk = 1MB
+request_disk = 5GB
 
-queue 4
+queue 20
