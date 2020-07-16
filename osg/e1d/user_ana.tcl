@@ -1,5 +1,5 @@
-#source /recsis/recsis_proc.tcl;
-source /group/clas/builds/centos77/trunk/reconstruction/recsis/recsis_proc.tcl
+source parms/recsis_proc.tcl;
+#source /group/clas/builds/centos77/trunk/reconstruction/recsis/recsis_proc.tcl
 
 # define packages
 turnoff ALL;

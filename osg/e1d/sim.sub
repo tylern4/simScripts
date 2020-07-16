@@ -16,10 +16,11 @@ log = logs/log_$(Cluster).$(Process).log
 #transfer_output_files = ""
 
 transfer_output_files = aao_rad.evt, all.root
-transfer_output_remaps = "aao_rad.evt = /public/tylern/clas6/sim/aao_rad/e1d_$(Process)_$(Cluster)_aao_rad.evt; all.root = /public/tylern/clas6/sim/aao_rad/e1d_$(Process)_$(Cluster).root"
+transfer_output_remaps = "aao_rad.evt = /public/tylern/clas6/sim/aao_rad/e1d_$(Cluster)_$(Process)_aao_rad.evt; all.root = /public/tylern/clas6/sim/aao_rad/e1d_$(Cluster)_$(Process).root"
+ 
 
 request_cpus = 1
 request_memory = 512MB
 request_disk = 5GB
 
-queue 20
+queue 100

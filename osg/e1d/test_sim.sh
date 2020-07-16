@@ -27,7 +27,7 @@ mkdir -p ${RECSIS_RUNTIME}
 
 tar -xvf parms.tar.gz
 export CLAS_PARMS=${PWD}/parms
-ln -s $CLAS_PARMS/bgrid_T67to33.fpk $CLAS_PARMS/bgrid_t.fpk
+
 
 export CLAS_CALDB_HOST=pi0.duckdns.org
 export CLAS_CALDB_USER=root
@@ -45,25 +45,19 @@ gsim_bat -nomcdata -ffread gsim.inp -mcin aao_rad.evt -bosout gsim.bos
 #cp gsim.bos gsim_no_gpp.bos
 echoerr "============ gsim_bat ============"
 
-du -sh *
-ls -latr
-
 echoerr "============ gpp ============"
-#gpp -ouncooked.bos -a2.35 -b2.35 -c2.35 -f0.97 -P0x1b -R23500 gsim.bos
+gpp -ouncooked.bos -a2.35 -b2.35 -c2.35 -f0.97 -P0x1b -R23500 gsim.bos
 #gpp -ouncooked.bos -R23500 gsim.bos
 echoerr "============ gpp ============"
 
 echoerr "============ user_ana ============"
-#user_ana -t user_ana.tcl
+user_ana -t user_ana.tcl
 #user_ana -t user_ana.tcl | grep -v HFITGA | grep -v HFITH | grep -v HFNT
 echoerr "============ user_ana ============"
 
-touch all.root
-#h10maker -rpm cooked.bos all.root
+h10maker -rpm cooked.bos all.root
 
-ls -la 
-echoerr $0 $1 $2
-
+du -sh *
 
 ENDTIME=$(date +%s)
 
