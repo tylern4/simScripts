@@ -33,32 +33,43 @@ export CLAS_CALDB_HOST=pi0.duckdns.org
 export CLAS_CALDB_USER=root
 echoerr() { printf "%s\n" "$*" >&1; printf "%s\n" "$*" >&2; }
 
-#set -e
-STARTTIME=$(date +%s)
-echoerr "============ aao_rad ============"
-aao_rad < aao_rad.inp
-echoerr "============ aao_rad ============"
+echoerr "====== cpu info ======"
+lscpu
+echoerr "====== cpu info ======"
 
-echoerr "============ gsim_bat ============"
+#set -e
+res1=$(date +%s.%N)
+echoerr "============ start aao_rad ============"
+aao_rad < aao_rad.inp
+echoerr "============ end aao_rad ============"
+
+echoerr "============ start gsim_bat ============"
 gsim_bat -nomcdata -ffread gsim.inp -mcin aao_rad.evt -bosout gsim.bos
 #gsim_bat -ffread gsim.inp -mcin aao_rad.evt -bosout gsim.bos
 #cp gsim.bos gsim_no_gpp.bos
-echoerr "============ gsim_bat ============"
+echoerr "============ end gsim_bat ============"
 
-echoerr "============ gpp ============"
+echoerr "============ start gpp ============"
 gpp -ouncooked.bos -a2.35 -b2.35 -c2.35 -f0.97 -P0x1b -R23500 gsim.bos
 #gpp -ouncooked.bos -R23500 gsim.bos
-echoerr "============ gpp ============"
+echoerr "============ end gpp ============"
 
-echoerr "============ user_ana ============"
-user_ana -t user_ana.tcl
-#user_ana -t user_ana.tcl | grep -v HFITGA | grep -v HFITH | grep -v HFNT
-echoerr "============ user_ana ============"
+echoerr "============ start user_ana ============"
+#user_ana -t user_ana.tcl
+user_ana -t user_ana.tcl | grep -v HFITGA | grep -v HFITH | grep -v HFNT
+echoerr "============ end user_ana ============"
 
 h10maker -rpm cooked.bos all.root
 
-du -sh *
 
-ENDTIME=$(date +%s)
+res2=$(date +%s.%N)
+dt=$(echo "$res2 - $res1" | bc)
+dd=$(echo "$dt/86400" | bc)
+dt2=$(echo "$dt-86400*$dd" | bc)
+dh=$(echo "$dt2/3600" | bc)
+dt3=$(echo "$dt2-3600*$dh" | bc)
+dm=$(echo "$dt3/60" | bc)
+ds=$(echo "$dt3-60*$dm" | bc)
 
-echo "Time for $HOSTNAME: $(($ENDTIME-$STARTTIME))"
+echo "Hostname: $HOSTNAME"
+printf "Total runtime: %d:%02d:%02d:%02.4f\n" $dd $dh $dm $ds
