@@ -38,7 +38,8 @@ lscpu
 echoerr "====== cpu info ======"
 
 #set -e
-res1=$(date +%s.%N)
+STARTTIME=$(date +%s)
+
 echoerr "============ start aao_rad ============"
 aao_rad < aao_rad.inp
 echoerr "============ end aao_rad ============"
@@ -61,15 +62,6 @@ echoerr "============ end user_ana ============"
 
 h10maker -rpm cooked.bos all.root
 
-
-res2=$(date +%s.%N)
-dt=$(echo "$res2 - $res1" | bc)
-dd=$(echo "$dt/86400" | bc)
-dt2=$(echo "$dt-86400*$dd" | bc)
-dh=$(echo "$dt2/3600" | bc)
-dt3=$(echo "$dt2-3600*$dh" | bc)
-dm=$(echo "$dt3/60" | bc)
-ds=$(echo "$dt3-60*$dm" | bc)
-
+ENDTIME=$(date +%s)
 echo "Hostname: $HOSTNAME"
-printf "Total runtime: %d:%02d:%02d:%02.4f\n" $dd $dh $dm $ds
+echo "Total runtime: $(($ENDTIME-$STARTTIME))"

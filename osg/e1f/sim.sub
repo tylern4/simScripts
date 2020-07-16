@@ -1,0 +1,24 @@
+Requirements = HAS_SINGULARITY == TRUE
++SingularityImage = "http://stash.osgconnect.net/public/tylern/clas6/clas6.img"
+#+SingularityImage = "/cvmfs/singularity.opensciencegrid.org/tylern4/clas6"
+
+JobBatchName = e1f_sim_$(Cluster)
+
+executable = test_sim.sh
+arguments = $(Cluster) $(Process) 
+transfer_input_files = test_sim.sh, aao_rad.inp, gsim.inp, user_ana.tcl, parms.tar.gz
+
+output = logs/out_$(Cluster).$(Process)
+error = logs/err_$(Cluster).$(Process)
+log = logs/log_$(Cluster).$(Process).log
+
+
+transfer_output_files = all.root
+transfer_output_remaps = "all.root = /public/tylern/clas6/sim/aao_rad/e1f_$(Cluster)_$(Process).root"
+ 
+
+request_cpus = 1
+request_memory = 512MB
+request_disk = 5GB
+
+queue 100
