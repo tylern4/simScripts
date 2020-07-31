@@ -1,36 +1,22 @@
-# original source /u/group/clas/builds/release-4-14/packages/tcl/recsis_proc.tcl;
-# new one:
-#source /group/clas/builds/test3/src/clas6-trunk/reconstruction/recsis/recsis_proc.tcl;
-# newer one:
-#source /group/clas/builds/src/clas-trunk/reconstruction/recsis/recsis_proc.tcl;
-#source /opt/programs/clas/builds/PRODUCTION/packages/tcl/recsis_proc.tcl;
-source /group/clas/builds/centos77/trunk/reconstruction/recsis/recsis_proc.tcl
+source parms/recsis_proc.tcl;
 
-#
 # define packages
 turnoff ALL;
 global_section off;
 turnon seb trk cc tof egn lac user pid;
-#turnon user;
 #
+inputfile uncooked.bos;
+setc chist_filename cooked_chist.hbook;
+setc log_file_name logfile;
 
-inputfile           uncooked.bos;
-setc chist_filename histfile;
-setc log_file_name  logfile;
 #
 #
-setc outbanknames(1) "CC  CCPBCL01DC0 DCPBEC  EC1 ECPBECPCECPOEVNTFBPMHBLAHEADHEVTIC  ICPBICHBLCPBMVRTPARTSC  SCPBSCRCTBIDTBLATBTRTGBITRPBTDPL"; 
-#setc outbanknames(2) "CCPBCL01DCPBEC1 ECPBECPCECPOEVNTFBPMHEADHEVTICPBICHBLCPBMVRTPARTSCPBSCRCTBIDTBTRTGBITRPBTDPL"; 
-#setc outbanknames(3) "CCPBCL01DCPBEC1 ECPBECPCECPOEVNTFBPMHEADHEVTICPBICHBLCPBMVRTPARTSCPBSCRCTBIDTBTRTGBITRPBTDPL"; 
-outputfile cooked.bos PROC1 2047;
-#outputfile outfile2 PROC2 2047;
-#outputfile outfile3 PROC3 2047;
-#
-#
-setc prlink_file_name  "prlink_e1f.bos";
-setc bfield_file_name  "bgrid_T67to33.fpk";
-#
-setc poltarget_field_file_name "bgrid_s.fpk";
+setc outbanknames(1) "TRGSHEADHEVTEVNTECPBSCPBDCPBCCPBLCPBPARTMCEVTRGSTBIDMCTKMCVX";
+#setc outbanknames(1) "HEADHEVTEVNTECPBSCPBDCPBCCPBLCPBPARTMCEVTRGSTBIDMCTKMCVX";
+setc prlink_file_name "prlink_e1f.bos";
+setc bfield_file_name "bgrid_T67to33.fpk";
+outputfile cooked.bos PROC 2047;
+
 #
 set torus_current       2250;
 set mini_torus_current  6000;
@@ -39,58 +25,50 @@ set TargetPos(3)       -25.0;
 set ntswitch 1;
 
 set dc_xvst_choice     0;
-#
-#set touch_id 0;
-#set touch_id 1;  
 
-# Franz's tcl variables
-set trk_maxiter       8;
-set trk_minhits(1)    2;
-set trk_lrambfit_chi2 50.;
-set trk_tbtfit_chi2   70.;
-set trk_prfit_chi2    70.;
-set trk_statistics    3 ;
-#
-# New tracking:
-# set trk_fitRegion   7;
-#
-#set dc_xvst_choice 0;
-#
-#
-set lseb_nt_do      -1;
+
+set dc_xvst_choice 0;
+set ltrk_do    -1;
+set legn_do    -1;
+set lcc_do     -1;
+set ltof_do    -1;
+set lst_do      0;
+set ltime_do   0;
+set lec1_do    -1;
+#1
+set ltagger_do 0;
+set lseb_do    -1;
+#2,3
+set lusr0_do   -1;
+set lusr1_do   -1;
+set lrf_do      0;
 set lall_nt_do      -1;
-set lseb_hist       -1;
-set lseb_h_do       -1;
-set lmon_hist       -1;
-set ltrk_h_do       -1;
-set legn_h_do       -1;
-set ltof_h_do       -1;
-set lec1_h_do       -1;                                                              
-set lfec_hist       -1;
-set l_nt_do         -1;
-#set lscr_nt_do      -1;
-#set ltbt_nt_do      -1;
-set lpart_nt_do     -1; # may need to be turned on
-set lmvrt_nt_do     -1;
-set lpid_make_trks   0;
-set ltbid_nost_do   -1;
-#set lmysql          -1;
-#set nmysql          -1;
-set lmctk_nt_do -1; # from Harut
-#
-#
-# tell FPACK not to stop if it thinks you are running out of time
+#4,5,6,7
+set lechb_nt_do 0;
+set ltrk_nt_do 0;
+set lec_nt_do 0 ;
+set llac_nt_do 0;
+set lccr_nt_do  0;
+set lscr_nt_do  0;
+set ltbtk_nt_do 0;
+set lseb_nt_do      -1;
+set lpart_nt_do     -1;
+set nt_id_cut 0;
+set def_geom -1;
+set def_adc -1;
+set def_tdc -1;
+set def_atten  0;
+set whole_surf 16.;
+set inner_surf 1.;
+set outer_surf 28.;
+set m2_ecel_cut 1000.;
+set m3_ecel_cut 10000.;
+set trkec__match 50;
+
 fpack "timestop -9999999999"
-#
-#
-# do not send events to event display
 set lscat $false;
 set ldisplay_all $false;
-#set nevt_to_skip  44000;
-#
-#
-setc rec_prompt "CLASCHEF_recsis> ";
 
-go 20000000;
-status;
+go 10000000;
+#/status;
 exit_pend;
