@@ -1,85 +1,72 @@
 #!/bin/bash
+export CLAS_PARMS=/data/parms
+export ROOTSYS=/usr/local/root
+export MYSQLINC=/usr/include/mysql
+export MYSQLLIB=/usr/lib64/mysql
+export CLAS6=/usr/local/clas-software/build
+export PATH=$CLAS6/bin:$PATH
+export CERN=/usr/local/cernlib/x86_64_rhel6
+export CERN_LEVEL=2005
+export CERN_ROOT=$CERN/$CERN_LEVEL
+export CVSCOSRC=$CERN/$CERN_LEVEL/src
+export PATH=$CERN/$CERN_LEVEL/src:$PATH
+export CERN_LIB=$CERN_ROOT/lib
+export CERNLIB=$CERN_ROOT/lib
+export CERN_BIN=$CERN_ROOT/bin
+export CLAS_TOOL=/usr/local/clas-software/analysis/ClasTool
+export PATH=$PATH:$CLAS_TOOL/bin/Linux
+export LD_LIBRARY_PATH=$ROOTSYS/lib:$CLAS_TOOL/slib/Linux:$CLAS6/lib
+
+source $ROOTSYS/bin/thisroot.sh
+
+export CLAS_CALDB_DBNAME="calib"
+export CLAS_CALDB_PASS=""
+export CLAS_CALDB_RUNINDEX="RunIndex"
+export RECSIS_RUNTIME="${PWD}/recsis"
+mkdir -p ${RECSIS_RUNTIME}
+
+tar -xvf parms.tar.gz
+export CLAS_PARMS=${PWD}/parms
+
+
+# export CLAS_CALDB_HOST=pi0.duckdns.org
+# export CLAS_CALDB_USER=root
+
+export CLAS_CALDB_HOST=clasdb.nickt.codes
+export CLAS_CALDB_USER=clasuser
+
 
 echoerr() { printf "%s\n" "$*" >&1; printf "%s\n" "$*" >&2; }
 
+echoerr "====== cpu info ======"
+lscpu
+echoerr "====== cpu info ======"
 
-run-singularity-clas6() {
-	mkdir -p $PWD/recsis &&
-    singularity exec \
-        -B $PWD/recsis:/recsis \
-        --pwd $PWD \
-        clas6.img "$@"
-}
+#set -e
+STARTTIME=$(date +%s)
 
+echoerr "============ start aao_rad ============"
+aao_rad < aao_rad.inp
+echoerr "============ end aao_rad ============"
 
-gsim_bat() {
-    echoerr "============ gsim_bat ============"
-    run-singularity-clas6 gsim_bat "$@"
-    echoerr "============ gsim_bat ============"
-}
-
-gpp() {
-    echoerr "============ gpp ============"
-    run-singularity-clas6 gpp "$@"
-    echoerr "============ gpp ============"
-}
-
-
-user_ana() {
-    echoerr "============ user_ana ============"
-    run-singularity-clas6 user_ana "$@"
-    echoerr "============ user_ana ============"
-}
-
-
-
-# Make a few environment varialbes for directories
-export JOB_DIR=${PWD}
-export WORK_DIR=/public/tylern/clas6/sim
-export SCRATCH=/srv
-export DATE=`date +%m-%d-%Y`
-
-
-# starttime to time job
-res1=$(date +%s.%N)
-
-export CLAS_CALDB_DBNAME="calib_user"
-export CLAS_CALDB_RUNINDEX="RunIndex"
-#export CLAS_CALDB_RUNINDEX="RunIndexe1fDC"
-
-
-########=========== Run Generator ===========########
-#************************* Modify this for the generator you want ****************************
-run-singularity-clas6 aao_rad < aao_rad.inp
-#************************* Modify this for the generator you want ****************************
-
-########=========== Run gsim ===========########
+echoerr "============ start gsim_bat ============"
 gsim_bat -nomcdata -ffread gsim.inp -mcin aao_rad.evt -bosout gsim.bos
+#gsim_bat -ffread gsim.inp -mcin aao_rad.evt -bosout gsim.bos
+#cp gsim.bos gsim_no_gpp.bos
+echoerr "============ end gsim_bat ============"
 
-########=========== Run gpp ===========########
-#************************* Modify this for gpp configuration ****************************
-gpp -ouncooked.bos -a1.357 -b1.357 -c1.357 -f1.05 -P0x1b -R23500 gsim.bos
-#************************* Modify this for gpp configurtaion ****************************
+echoerr "============ start gpp ============"
+gpp -ouncooked.bos -a2.35 -b2.35 -c2.35 -f0.97 -P0x1b -R23500 gsim.bos
+#gpp -ouncooked.bos -R23500 gsim.bos
+echoerr "============ end gpp ============"
 
-########=========== Run user_ana ===========########
-user_ana -t user_ana.tcl
+echoerr "============ start user_ana ============"
+#user_ana -t user_ana.tcl
+user_ana -t user_ana.tcl | grep -v HFITGA | grep -v HFITH | grep -v HFNT
+echoerr "============ end user_ana ============"
 
-#************************* Modify this for your output file preferences ****************************
-########=========== Run h10maker ===========########
-run-singularity-clas6 h10maker -rpm cooked.bos all.root
-########=========== Copy all the files to Work for output ===========########
-cp -r ${SCRATCH}/all.root ${WORK_DIR}/e1d/npip/e1d_sim_${DATE}_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.root
-#************************* Modify this for your output file preferences ****************************
+h10maker -rpm cooked.bos all.root
 
-rm -rf ${SCRATCH}/*
-# endtime to time job
-res2=$(date +%s.%N)
-dt=$(echo "$res2 - $res1" | bc)
-dd=$(echo "$dt/86400" | bc)
-dt2=$(echo "$dt-86400*$dd" | bc)
-dh=$(echo "$dt2/3600" | bc)
-dt3=$(echo "$dt2-3600*$dh" | bc)
-dm=$(echo "$dt3/60" | bc)
-ds=$(echo "$dt3-60*$dm" | bc)
+ENDTIME=$(date +%s)
 echo "Hostname: $HOSTNAME"
-printf "Total runtime: %d:%02d:%02d:%02.4f\n" $dd $dh $dm $ds
+echo "Total runtime: $(($ENDTIME-$STARTTIME))"

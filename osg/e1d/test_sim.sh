@@ -29,8 +29,13 @@ tar -xvf parms.tar.gz
 export CLAS_PARMS=${PWD}/parms
 
 
-export CLAS_CALDB_HOST=pi0.duckdns.org
-export CLAS_CALDB_USER=root
+# export CLAS_CALDB_HOST=pi0.duckdns.org
+# export CLAS_CALDB_USER=root
+
+export CLAS_CALDB_HOST=clasdb.nickt.codes
+export CLAS_CALDB_USER=clasuser
+
+
 echoerr() { printf "%s\n" "$*" >&1; printf "%s\n" "$*" >&2; }
 
 echoerr "====== cpu info ======"

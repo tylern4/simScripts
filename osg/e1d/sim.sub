@@ -1,10 +1,11 @@
-Requirements = HAS_SINGULARITY == TRUE
-+SingularityImage = "http://stash.osgconnect.net/public/tylern/clas6/clas6.img"
-#+SingularityImage = "/cvmfs/singularity.opensciencegrid.org/tylern4/clas6"
+Requirements = (HAS_SINGULARITY == TRUE) && (GLIDEIN_ResourceName =!= "IRISHEP-SSL-UCHICAGO")
+# TODO Requirements = HAS_SINGULARITY == TRUE ## Go back to this to enable ssl-hep in a bit
+#+SingularityImage = "http://stash.osgconnect.net/public/tylern/clas6/clas6.img"
++SingularityImage = "/cvmfs/singularity.opensciencegrid.org/tylern4/clas6:latest"
 
 JobBatchName = e1d_sim_$(Cluster)
 
-executable = test_sim.sh
+executable = clas6_sim.sh
 arguments = $(Cluster) $(Process) 
 transfer_input_files = test_sim.sh, aao_rad.inp, gsim.inp, user_ana.tcl, parms.tar.gz
 
@@ -15,12 +16,12 @@ log = logs/log_$(Cluster).$(Process).log
 
 #transfer_output_files = ""
 
-transfer_output_files = aao_rad.evt, all.root
-transfer_output_remaps = "aao_rad.evt = /public/tylern/clas6/sim/aao_rad/e1d_$(Cluster)_$(Process)_aao_rad.evt; all.root = /public/tylern/clas6/sim/aao_rad/e1d_$(Cluster)_$(Process).root"
+transfer_output_files = all.root
+transfer_output_remaps = "all.root = /public/tylern/clas6/sim/aao_rad/e1d/e1d_osg_$(Cluster)_$(Process).root"
  
 
 request_cpus = 1
 request_memory = 512MB
 request_disk = 5GB
 
-queue 100
+queue 1000
