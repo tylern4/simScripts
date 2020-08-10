@@ -1,7 +1,9 @@
 Requirements = (HAS_SINGULARITY == TRUE) && (GLIDEIN_ResourceName =!= "IRISHEP-SSL-UCHICAGO")
-# TODO Requirements = HAS_SINGULARITY == TRUE ## Go back to this to enable ssl-hep in a bit
-#+SingularityImage = "http://stash.osgconnect.net/public/tylern/clas6/clas6.img"
-+SingularityImage = "/cvmfs/singularity.opensciencegrid.org/tylern4/clas6:latest"
+# TODO 
+# Requirements = (HAS_SINGULARITY == TRUE) 
+## Go back to this to enable ssl-hep in a bit
++SingularityImage = "http://stash.osgconnect.net/public/tylern/clas6/clas6.img"
+#+SingularityImage = "/cvmfs/singularity.opensciencegrid.org/tylern4/clas6:latest"
 
 JobBatchName = e1d_sim_$(Cluster)
 
@@ -17,11 +19,11 @@ log = logs/log_$(Cluster).$(Process).log
 #transfer_output_files = ""
 
 transfer_output_files = all.root
-transfer_output_remaps = "all.root = /public/tylern/clas6/sim/aao_rad/e1d/e1d_osg_$(Cluster)_$(Process).root"
+transfer_output_remaps = "all.root = /public/tylern/clas6/sim/aao_rad/e1d/e1d_osg_RunIndexe1dvcs_$(Cluster)_$(Process).root"
  
 
 request_cpus = 1
 request_memory = 512MB
 request_disk = 5GB
 
-queue 1000
+queue 2000
