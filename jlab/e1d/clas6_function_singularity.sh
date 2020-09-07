@@ -24,7 +24,7 @@ run-singularity-clas6() {
         -B /u/home:/home \
         -B $HOME/.recsis:/recsis \
         --pwd $PWD \
-        /work/clas/clase1/tylern/clas6.img "$@"
+	/work/clas/clase1/tylern/clas6.img "$@"
     else
         singularity exec \
         -B /u/group:/group \
@@ -34,7 +34,7 @@ run-singularity-clas6() {
         -B /u/home:/home \
         -B $HOME/.recsis:/recsis \
         --pwd /scratch/${USER}/${SLURM_JOB_ID}/${SLURM_ARRAY_TASK_ID} \
-        /work/clas/clase1/tylern/clas6.img "$@"
+	/work/clas/clase1/tylern/clas6.img "$@"
     fi
 }
 
