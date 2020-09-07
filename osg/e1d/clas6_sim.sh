@@ -20,8 +20,8 @@ export LD_LIBRARY_PATH=$ROOTSYS/lib:$CLAS_TOOL/slib/Linux:$CLAS6/lib
 source $ROOTSYS/bin/thisroot.sh
 
 export CLAS_CALDB_PASS=""
-#export CLAS_CALDB_RUNINDEX="RunIndex"
-export CLAS_CALDB_RUNINDEX="calib_user.RunIndexe1dvcs"
+export CLAS_CALDB_RUNINDEX="RunIndex"
+#export CLAS_CALDB_RUNINDEX="calib_user.RunIndexe1dvcs"
 export RECSIS_RUNTIME="${PWD}/recsis"
 mkdir -p ${RECSIS_RUNTIME}
 
@@ -34,7 +34,7 @@ export CLAS_PARMS=${PWD}/parms
 
 export CLAS_CALDB_HOST=clasdb.nickt.codes
 export CLAS_CALDB_USER=clasuser
-
+export DATE=`date +%m-%d-%Y`
 
 echoerr() { printf "%s\n" "$*" >&1; printf "%s\n" "$*" >&2; }
 
