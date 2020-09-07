@@ -19,9 +19,8 @@ export LD_LIBRARY_PATH=$ROOTSYS/lib:$CLAS_TOOL/slib/Linux:$CLAS6/lib
 
 source $ROOTSYS/bin/thisroot.sh
 
-export CLAS_CALDB_DBNAME="calib"
 export CLAS_CALDB_PASS=""
-export CLAS_CALDB_RUNINDEX="calib_user.RunIndexe1fDC"
+export CLAS_CALDB_RUNINDEX="calib_user.RunIndexe1f"
 export RECSIS_RUNTIME="${PWD}/recsis"
 mkdir -p ${RECSIS_RUNTIME}
 
