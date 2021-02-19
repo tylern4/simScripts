@@ -19,6 +19,9 @@ export LD_LIBRARY_PATH=$ROOTSYS/lib:$CLAS_TOOL/slib/Linux:$CLAS6/lib
 
 source $ROOTSYS/bin/thisroot.sh
 
+export TMPDIR=$(mktemp -d -p ${PWD})
+echo $TMPDIR
+
 export CLAS_CALDB_PASS=""
 export CLAS_CALDB_RUNINDEX="RunIndex"
 #export CLAS_CALDB_RUNINDEX="calib_user.RunIndexe1dvcs"
@@ -32,8 +35,12 @@ export CLAS_PARMS=${PWD}/parms
 # export CLAS_CALDB_HOST=pi0.duckdns.org
 # export CLAS_CALDB_USER=root
 
-export CLAS_CALDB_HOST=clasdb.nickt.codes
-export CLAS_CALDB_USER=clasuser
+# export CLAS_CALDB_HOST=clasdb.nickt.codes
+# export CLAS_CALDB_USER=clasuser
+
+export CLAS_CALDB_HOST=clasdb.jlab.org
+export CLAS_CALDB_USER=clasreader
+
 export DATE=`date +%m-%d-%Y`
 
 echoerr() { printf "%s\n" "$*" >&1; printf "%s\n" "$*" >&2; }
@@ -66,6 +73,17 @@ user_ana -t user_ana.tcl | grep -v HFITGA | grep -v HFITH | grep -v HFNT
 echoerr "============ end user_ana ============"
 
 h10maker -rpm cooked.bos all.root
+
+#ls -latr
+echoerr "============ cleanup ============"
+du -sh *
+echoerr "============ cleanup ============"
+rm -rf aao_rad.* anamonhist cooked.bos cooked_chist.hbook gsim.bos parms parms.tar.gz uncooked.bos
+echoerr "============ cleanup ============"
+du -sh *
+echoerr "============ cleanup ============"
+df -h .
+echoerr "============ cleanup ============"
 
 ENDTIME=$(date +%s)
 echo "Hostname: $HOSTNAME"

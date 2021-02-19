@@ -1,6 +1,6 @@
-Requirements = (HAS_SINGULARITY == TRUE) && (GLIDEIN_ResourceName =!= "IRISHEP-SSL-UCHICAGO")
+#Requirements = (HAS_SINGULARITY == TRUE) && (GLIDEIN_ResourceName =!= "IRISHEP-SSL-UCHICAGO")
 # TODO 
-# Requirements = (HAS_SINGULARITY == TRUE) 
+Requirements = (HAS_SINGULARITY == TRUE) 
 ## Go back to this to enable ssl-hep in a bit
 #+SingularityImage = "http://stash.osgconnect.net/public/tylern/clas6/clas6.img"
 +SingularityImage = "/cvmfs/singularity.opensciencegrid.org/tylern4/clas6:latest"
@@ -9,7 +9,7 @@ JobBatchName = e1d_sim_$(Cluster)
 
 executable = clas6_sim.sh
 arguments = $(Cluster) $(Process) 
-transfer_input_files = test_sim.sh, aao_rad.inp, gsim.inp, user_ana.tcl, parms.tar.gz
+transfer_input_files = aao_rad.inp, gsim.inp, user_ana.tcl, parms.tar.gz
 
 output = logs/out_$(Cluster).$(Process)
 error = logs/err_$(Cluster).$(Process)
@@ -26,4 +26,4 @@ request_cpus = 1
 request_memory = 512MB
 request_disk = 5GB
 
-queue 2000
+queue 8000
