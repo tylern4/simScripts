@@ -19,8 +19,8 @@ export LD_LIBRARY_PATH=$ROOTSYS/lib:$CLAS_TOOL/slib/Linux:$CLAS6/lib
 
 source $ROOTSYS/bin/thisroot.sh
 
-export TMPDIR=$(mktemp -d -p ${PWD})
-echo $TMPDIR
+# export TMPDIR=$(mktemp -d -p ${PWD})
+# echo $TMPDIR
 
 export CLAS_CALDB_PASS=""
 export CLAS_CALDB_RUNINDEX="RunIndex"
