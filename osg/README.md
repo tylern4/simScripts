@@ -35,3 +35,10 @@ condor_release --all
 ```
 condor_rm JOB_ID # replace with the job id found from condor_q command
 ```
+
+
+## Checking Holds
+
+```
+condor_q -hold -af HoldReason JOB_ID # replace with the job id found from condor_q command
+```
