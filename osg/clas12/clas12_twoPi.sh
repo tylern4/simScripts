@@ -5,11 +5,12 @@ source /etc/profile.d/environment.sh
 export RCDB_CONNECTION=sqlite:////cvmfs/oasis.opensciencegrid.org/jlab/hallb/clas12/soft/noarch/data/rcdb/rcdb_4.4.1.sqlite
 
 source /cvmfs/oasis.opensciencegrid.org/jlab/hallb/clas12/soft/setup.sh
+
+
+module load coatjava/6.5.9
+module load jdk/1.8.0_31
 module load root/6.22.06
 module load mcgen/1.6
-
-module unload coatjava
-module load coatjava/6.5.6.1
 
 echo $0 $1
 
