@@ -1,8 +1,5 @@
-#Requirements = (HAS_SINGULARITY == TRUE) && (GLIDEIN_ResourceName =!= "IRISHEP-SSL-UCHICAGO")
-# TODO 
 Requirements = (HAS_SINGULARITY == TRUE) 
-## Go back to this to enable ssl-hep in a bit
-#+SingularityImage = "http://stash.osgconnect.net/public/tylern/clas6/clas6.img"
+# +SingularityImage = "http://stash.osgconnect.net/public/tylern/clas6/clas6.img"
 +SingularityImage = "/cvmfs/singularity.opensciencegrid.org/tylern4/clas6:latest"
 
 JobBatchName = e1d_sim_$(Cluster)
