@@ -12,12 +12,8 @@ output = logs/out_$(Cluster).$(Process)
 error = logs/err_$(Cluster).$(Process)
 log = logs/log_$(Cluster).$(Process).log
 
-
-#transfer_output_files = ""
-
 transfer_output_files = all.root
 transfer_output_remaps = "all.root = /public/tylern/clas6/sim/aao_rad/e1d/e1d_osg_$(Cluster)_$(Process).root"
- 
 
 request_cpus = 1
 request_memory = 512MB
