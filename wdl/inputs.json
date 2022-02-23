@@ -1,8 +1,0 @@
-{
-  "simulation.total": ["0", "1", "2", "3", "4"],
-  "simulation.aaoradinp": "aao_rad.inp",
-  "simulation.parms": "parms.tar.gz",
-  "simulation.gsiminp" : "gsim.inp",
-  "simulation.useranain" : "user_ana.tcl"
-}
-
