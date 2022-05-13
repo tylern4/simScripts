@@ -15,7 +15,7 @@ log = logs/log_$(Cluster).$(Process).log
 
 
 transfer_output_files = all.root
-transfer_output_remaps = "all.root = /public/tylern/clas6/sim/aao_rad/e1f/e1f_osg_$(Cluster)_$(Process).root"
+transfer_output_remaps = "all.root = /public/tylern/clas6/sim/aao_rad/e1f/e1f_osg_RunIndex_$(Cluster)_$(Process).root"
  
 
 request_cpus = 1

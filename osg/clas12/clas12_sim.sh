@@ -5,6 +5,7 @@ source /etc/profile.d/environment.sh
 export RCDB_CONNECTION=sqlite:////cvmfs/oasis.opensciencegrid.org/jlab/hallb/clas12/soft/noarch/data/rcdb/rcdb_4.4.1.sqlite
 
 module unload coatjava
+module purge
 module load coatjava/6.5.6.1
 
 echo $0 $1
