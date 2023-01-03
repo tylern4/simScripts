@@ -1,0 +1,24 @@
+universe = vanilla
+
+JobBatchName = e1d_sim_$(Cluster)
+
+executable = test_sim.sh
+arguments = $(Cluster) $(Process) 
+transfer_input_files = test_sim.sh, aao_rad.inp, gsim.inp, user_ana.tcl
+
+output = logs/out_$(Cluster).$(Process)
+error = logs/err_$(Cluster).$(Process)
+log = logs/log_$(Cluster).$(Process).log
+
+
+# transfer_output_files = all.root
+transfer_output_files = aao_rad.evt
+# transfer_output_remaps = "all.root = /global/cscratch1/sd/tylern/htcondor/simulations/outputs/e1d_$(Cluster)_$(Process).root"
+transfer_output_remaps = "aao_rad.evt = /global/cscratch1/sd/tylern/htcondor/simulations/outputs/e1d_$(Cluster)_$(Process).root"
+ 
+
+request_cpus = 1
+request_memory = 512MB
+request_disk = 5GB
+
+queue 64

@@ -1,0 +1,23 @@
+#!/bin/sh 
+#SBATCH -N 1
+#SBATCH -n 32
+#SBATCH -q shared
+#SBATCH -C haswell
+#SBATCH -A m3792 
+#SBATCH -t 07:00:00
+#SBATCH --job-name=condor_worker
+#SBATCH --exclusive
+#SBATCH -e log/condor-worker-%j.err
+#SBATCH -o log/condor-worker-%j.out
+
+#SBATCH --mail-user=tylern@lbl.gov
+#SBATCH --mail-type=ALL
+
+/global/project/projectdirs/m3792/tylern/local/bin/pagurus --user $USER --outfile $SCRATCH/pagurus-outputs/condor_worker_$SLURM_JOB_ID.csv &
+export PID=$!
+
+
+$HOME/condor/spin/start_worker.sh &
+
+sleep 1000
+kill $PID
