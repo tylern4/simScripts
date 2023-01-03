@@ -1,0 +1,25 @@
+Requirements =  (HAS_SINGULARITY == TRUE) && (OSG_GLIDEIN_VERSION >= 546) && (HAS_CVMFS_oasis_opensciencegrid_org == TRUE) && (GLIDEIN_ResourceName =!= "Purdue-Geddes")
++SingularityImage = "/cvmfs/singularity.opensciencegrid.org/jeffersonlab/clas12software:production"
++SingularityBindCVMFS = True
+
+JobBatchName = clas12_sim_$(Cluster)
+
+executable = clas12_sim.sh
+arguments = twopeg_8_$(Process).dat
+transfer_input_files = /public/tylern/clas12/twopeg_dat_files/twopeg_8_$(Process).dat
+
+output = logs/out_$(Cluster).$(Process)
+error = logs/err_$(Cluster).$(Process)
+log = logs/log_$(Cluster).$(Process).log
+
+
+#transfer_output_files = ""
+
+transfer_output_files = dst.hipo
+transfer_output_remaps = "dst.hipo = /public/tylern/clas12/sim/twopeg/clas12_twopeg_24GeV_rga-fall2018_$(Cluster)_8_$(Process).hipo"
+
+request_cpus = 1
+request_memory = 2GB
+request_disk = 8GB
+
+queue 1000

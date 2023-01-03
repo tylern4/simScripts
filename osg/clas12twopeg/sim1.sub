@@ -5,8 +5,8 @@ Requirements = (HAS_SINGULARITY == TRUE)
 JobBatchName = clas12_sim_$(Cluster)
 
 executable = clas12_sim.sh
-arguments = threePi_$(Process).dat
-transfer_input_files = /public/tylern/clas12/lund/threePi_$(Process).dat
+arguments = twopeg_1_$(Process).dat
+transfer_input_files = /public/tylern/clas12/twopeg_dat_files/twopeg_1_$(Process).dat
 
 output = logs/out_$(Cluster).$(Process)
 error = logs/err_$(Cluster).$(Process)
@@ -16,10 +16,10 @@ log = logs/log_$(Cluster).$(Process).log
 #transfer_output_files = ""
 
 transfer_output_files = dst.hipo
-transfer_output_remaps = "dst.hipo = /public/tylern/clas12/sim/clas12_threePi_rga-fall2018_$(Cluster)_$(Process).hipo"
+transfer_output_remaps = "dst.hipo = /public/tylern/clas12/sim/twopeg/clas12_twopeg_24GeV_rga-fall2018_$(Cluster)_$(Process).hipo"
 
 request_cpus = 1
-request_memory = 512MB
-request_disk = 5GB
+request_memory = 2GB
+request_disk = 8GB
 
-queue 20
+queue 1000
